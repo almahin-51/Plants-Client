@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "plant-shop",
+    "name": "Plant Shop",
     "slug": "plant-shop",
+    "description": "This is a tree plantation related application",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/tree.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/tree.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

@@ -1,11 +1,39 @@
+// import 'react-native-gesture-handler';
+// import React from 'react';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+
+// const Stack = createStackNavigator();
+// import { StatusBar, View, Text } from 'react-native';
+// import Home from './src/View/Home';
+// import Details from './src/View/Details';
+// import COLORS from './src/consts/colors';
+
+// const App = () => {
+//   return (
+//     <NavigationContainer>
+//       <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
+//       <Stack.Navigator screenOptions={{ header: () => null }}>
+//         <Stack.Screen name="Home" component={Home} />
+//         <Stack.Screen name="Details" component={Details} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
+
+// export default App;
+
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, FlatList, Dimensions, Image } from 'react-native';
 import COLORS from './src/consts/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import plants from './src/consts/plants';
 
-export default function App() {
+const width = Dimensions.get('screen').width / 2 - 30;
+
+export default function Home() {
   const categories = ['POPULAR', 'ORGANIC', 'INDOORS', 'SYNTHETIC'];
 
   const [categoryIndex, setCategoryIndex] = React.useState(0);
@@ -25,6 +53,48 @@ export default function App() {
         ))
       }
     </View>
+  };
+
+  const Card = ({ plant }) => {
+    return (
+      <TouchableOpacity>
+        <View style={styles.card}>
+          <View style={{ alignItems: "flex-end" }}>
+            <View style={{
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: plant.like ? `rgba(245, 42, 42, 0.2)` : `rgba(0, 0, 0, 0.2)`,
+            }}>
+              < MaterialIcons name="favorite" size={18} color={plant.like ? COLORS.red : COLORS.dark} />
+            </View>
+          </View>
+          <View style={{ height: 100, alignItems: "center" }}>
+            <Image
+              style={{ flex: 1, resizeMode: "contain" }}
+              source={plant.img}
+            />
+          </View>
+          <Text style={{ fontSize: 17, fontWeight: 'bold', marginTop: 10 }}>{plant.name}</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5, }}>
+            <Text style={{ fontSize: 19, fontWeight: 'bold' }}>${plant.price}</Text>
+            <View style={{
+              height: 25,
+              width: 25,
+              backgroundColor:
+                COLORS.green,
+              borderRadius: 5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Text style={{ fontSize: 22, color: COLORS.white, fontWeight: 'bold' }}>+</Text>
+            </View>
+          </View>
+        </View >
+      </TouchableOpacity>
+    )
   }
 
   return (
@@ -46,7 +116,16 @@ export default function App() {
         </View>
       </View>
       <CategoryList />
-      <FlatList numColumns={2} />
+      <FlatList
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          marginTop: 10,
+          paddingBottom: 50,
+        }}
+        numColumns={2}
+        data={plants}
+        renderItem={({ item }) => <Card plant={item} />} />
       <StatusBar style="auto" />
     </SafeAreaView>
   );
@@ -103,5 +182,14 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     borderBottomWidth: 2,
     borderColor: COLORS.green,
+  },
+  card: {
+    height: 225,
+    backgroundColor: COLORS.light,
+    width,
+    marginHorizontal: 2,
+    borderRadius: 10,
+    marginBottom: 20,
+    padding: 15,
   }
 });
